@@ -13,8 +13,8 @@
       <div class="form-group" style="position:relative">
         <input v-model="password" :type="showPass ? 'text' : 'password'"
                placeholder="รหัสผ่าน (อย่างน้อย 6 ตัว)" class="input-field" />
-        <button class="eye-btn" @click="showPass = !showPass">
-          {{ showPass ? '🙈' : '👁️' }}
+        <button class="eye-btn" type="button" @click="showPass = !showPass">
+          <i :class="showPass ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" aria-hidden="true"></i>
         </button>
       </div>
 
@@ -75,14 +75,15 @@ async function handleRegister() {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 700px;
-  background: #BDBDBD;
+  min-height: 100%;
+  background: linear-gradient(180deg, #eceff1 0%, #e0e0e0 100%);
+  padding: clamp(18px, 5vw, 42px) 0;
 }
 .login-card {
   background: white;
   border-radius: var(--radius);
-  padding: 28px 24px;
-  width: 300px;
+  padding: clamp(22px, 4.5vw, 34px) clamp(18px, 4vw, 30px);
+  width: min(100%, 420px);
   box-shadow: var(--shadow);
 }
 .form-group { margin-bottom: 14px; }
@@ -91,7 +92,22 @@ async function handleRegister() {
   transform: translateY(-50%);
   background: none; border: none; cursor: pointer; font-size: 16px;
 }
+.eye-btn i { color: var(--text-sub); }
 .error-text { color: var(--red); font-size: 13px; margin-bottom: 12px; text-align: center; }
 .link-red { color: var(--red); font-weight: 600; text-decoration: none; }
 .register-text { text-align: center; margin-top: 16px; font-size: 13px; color: var(--text-sub); }
+
+@media (max-width: 767px) {
+  .login-view {
+    background: transparent;
+    padding: 0;
+  }
+
+  .login-card {
+    width: 100%;
+    border-radius: 14px;
+    box-shadow: none;
+    border: 1.5px solid var(--gray-border);
+  }
+}
 </style>

@@ -3,7 +3,7 @@
     <div class="phone-frame">
       <RouterView v-if="!authStore.loading" />
       <div v-else class="splash">
-        <div class="pizza-spin">🍕</div>
+        <img src="/images/menus/Logo.png" style="width:80px;height:80px;object-fit:contain;animation:spin 1s linear infinite" />
         <p>กำลังโหลด...</p>
       </div>
     </div>
@@ -36,43 +36,48 @@ const authStore = useAuthStore()
   --radius-sm: 10px;
   --shadow: 0 4px 20px rgba(0,0,0,0.1);
   --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+  --content-max: 860px;
+}
+
+html,
+body,
+#app {
+  width: 100%;
+  min-height: 100%;
 }
 
 body {
   font-family: 'Sarabun', sans-serif;
-  background: #BDBDBD;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: radial-gradient(circle at 20% 20%, #eceff1 0%, #d6dce0 45%, #b0bec5 100%);
+  min-height: 100dvh;
 }
 
 #app-wrapper {
   width: 100%;
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  padding: 20px;
+  padding: clamp(0px, 2.5vw, 24px);
 }
 
 .phone-frame {
-  width: 390px;
-  min-height: 700px;
+  width: min(100%, 980px);
+  min-height: calc(100dvh - clamp(0px, 2.5vw, 24px) * 2);
   background: var(--white);
-  border-radius: 40px;
+  border-radius: 30px;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.24);
   position: relative;
 }
 
 /* Mobile full width */
-@media (max-width: 430px) {
+@media (max-width: 767px) {
   body { background: var(--white); }
   #app-wrapper { padding: 0; }
   .phone-frame {
     width: 100%;
-    min-height: 100vh;
+    min-height: 100dvh;
     border-radius: 0;
     box-shadow: none;
   }
@@ -83,8 +88,10 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 700px;
+  min-height: 60dvh;
+  height: 100%;
   gap: 16px;
+  padding: 32px 16px;
 }
 
 .pizza-spin {
@@ -99,9 +106,11 @@ body {
 
 /* Shared utility styles */
 .view {
-  padding: 24px 20px;
-  min-height: 700px;
+  padding: clamp(20px, 4vw, 30px) clamp(16px, 4vw, 28px);
+  min-height: 100%;
   position: relative;
+  max-width: var(--content-max);
+  margin: 0 auto;
 }
 
 .btn {
@@ -168,7 +177,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 24px;
+  gap: 12px;
+  margin-bottom: clamp(18px, 3.2vw, 24px);
 }
 
 .avatar {
@@ -189,6 +199,15 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.avatar i {
+  font-size: 18px;
+  color: #7B4B32;
+}
+
+.icon-inline {
+  margin-right: 6px;
 }
 
 .input-field {

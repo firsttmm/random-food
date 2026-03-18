@@ -1,9 +1,8 @@
 // src/stores/food.js
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import {
-  collection, getDocs, addDoc, deleteDoc,
-  doc, query, where, serverTimestamp, getDoc
+import { collection, getDocs, addDoc, deleteDoc,
+  doc, query, where, serverTimestamp, getDoc, updateDoc
 } from 'firebase/firestore'
 import { db } from '@/firebase/config'
 import { useAuthStore } from './auth'
@@ -166,14 +165,11 @@ export const useFoodStore = defineStore('food', () => {
 
   // ดู favorites ของเพื่อน (ที่เปิด share)
   async function fetchFriendFavorites(friendUid) {
-    const snap = await getDocs(
-      query(
-        collection(db, 'users', friendUid, 'favorites'),
-        where('isShared', '==', true)
-      )
-    )
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }))
-  }
+  const snap = await getDocs(
+    collection(db, 'users', friendUid, 'favorites')
+  )
+  return snap.docs.map(d => ({ id: d.id, ...d.data() }))
+}
 
   // ดึงรายชื่อ users ทั้งหมด (สำหรับหน้าส่อง)
   async function fetchAllUsers() {
@@ -182,13 +178,39 @@ export const useFoodStore = defineStore('food', () => {
       .map(d => ({ id: d.id, ...d.data() }))
       .filter(u => u.uid !== authStore.user?.uid)
   }
+  // ดึง share settings ของ user
+  async function fetchShareSettings() {
+    if (!authStore.user) return null
+    const ref = doc(db, 'users', authStore.user.uid)
+    const snap = await getDoc(ref)
+    return snap.data()?.shareSettings || null
+  }
+
+  // บันทึก share settings
+  async function updateShareSettings(settings) {
+    if (!authStore.user) return
+    await updateDoc(doc(db, 'users', authStore.user.uid), {
+      shareSettings: settings
+    })
+  }
+
+function clearStore() {
+  userPins.value = []
+  favorites.value = []
+  currentMenu.value = null
+}
+
+
 
   return {
-    allMenus, userPins, favorites, currentMenu,
-    fetchAllMenus, fetchUserPins, fetchFavorites,
-    randomMenu, randomFromFavorites,
-    addPin, removePin,
-    addFavorite, removeFavorite,
-    fetchFriendFavorites, fetchAllUsers
-  }
+  allMenus, userPins, favorites, currentMenu,
+  fetchAllMenus, fetchUserPins, fetchFavorites,
+  randomMenu, randomFromFavorites,
+  addPin, removePin,
+  addFavorite, removeFavorite,
+  fetchFriendFavorites, fetchAllUsers,
+  fetchShareSettings, updateShareSettings,
+  clearStore
+
+}
 })

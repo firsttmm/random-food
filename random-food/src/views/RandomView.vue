@@ -4,7 +4,9 @@
     <div class="header-row">
       <button class="back-btn" @click="$router.push('/')">←</button>
       <span class="page-title">สุ่มเมนูอาหาร</span>
-      <button class="filter-btn" @click="showFilter = !showFilter">⚙️</button>
+      <button class="filter-btn" @click="showFilter = !showFilter">
+        <i class="fa-solid fa-gear" aria-hidden="true"></i>
+      </button>
     </div>
 
     <!-- Distance filter dropdown -->
@@ -19,14 +21,16 @@
           </button>
         </div>
         <p v-if="!locationGranted" class="loc-warn">
-          ⚠️ กรุณาอนุญาตตำแหน่งเพื่อกรองตามระยะทาง
+          <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+          กรุณาอนุญาตตำแหน่งเพื่อกรองตามระยะทาง
         </p>
       </div>
     </Transition>
 
     <!-- Random button -->
     <button class="btn btn-primary random-btn" :disabled="spinning" @click="doRandom">
-      {{ spinning ? '🎲 กำลังสุ่ม...' : '🎲 กดสุ่มเมนูอาหาร' }}
+      <i :class="['fa-solid fa-dice', { 'fa-spin': spinning }]" aria-hidden="true"></i>
+      <span>{{ spinning ? 'กำลังสุ่ม...' : 'กดสุ่มเมนูอาหาร' }}</span>
     </button>
 
     <!-- Result card -->
@@ -36,23 +40,32 @@
              @error="onImgError" />
         <div class="card-info">
           <span class="tag">{{ menu.restaurantName }}</span>
-          <button class="map-icon-btn" @click="goMap" title="ดูแผนที่">🗺️</button>
+          <button class="map-icon-btn" @click="goMap" title="ดูแผนที่">
+            <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+          </button>
         </div>
         <h3 class="menu-name">{{ menu.menuName }}</h3>
-        <p v-if="distanceText" class="dist-text">📍 {{ distanceText }}</p>
+        <p v-if="distanceText" class="dist-text">
+          <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+          {{ distanceText }}
+        </p>
 
         <button v-if="authStore.isLoggedIn" class="btn btn-outline fav-btn" @click="addToFav">
-          {{ favAdded ? '✅ เพิ่มแล้ว' : '♡ เพิ่มรายการโปรด' }}
+          <i :class="favAdded ? 'fa-solid fa-circle-check' : 'fa-regular fa-heart'" aria-hidden="true"></i>
+          {{ favAdded ? 'เพิ่มรายการโปรดแล้ว' : 'เพิ่มรายการโปรด' }}
         </button>
         <RouterLink v-else to="/login" class="btn btn-outline fav-btn">
-          ♡ เข้าสู่ระบบเพื่อบันทึก
+          <i class="fa-regular fa-heart" aria-hidden="true"></i>
+          เข้าสู่ระบบเพื่อบันทึก
         </RouterLink>
       </div>
     </Transition>
 
     <!-- Loading init -->
     <div v-if="loadingMenus" class="loading-center">
-      <div class="pizza-spin">🍕</div>
+      <div class="pizza-spin">
+        <i class="fa-solid fa-pizza-slice" aria-hidden="true"></i>
+      </div>
       <p>กำลังโหลดเมนู...</p>
     </div>
   </div>
@@ -159,10 +172,23 @@ function onImgError(e) {
 </script>
 
 <style scoped>
-.random-view { padding-top: 24px; }
+.random-view { padding-top: clamp(20px, 4vw, 28px); }
 
 .filter-btn {
-  background: none; border: none; font-size: 20px; cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter-btn i {
+  font-size: 18px;
+  color: var(--text);
 }
 
 .filter-dropdown {
@@ -170,7 +196,7 @@ function onImgError(e) {
   border: 1.5px solid var(--gray-border);
   border-radius: var(--radius-sm);
   padding: 16px;
-  margin-bottom: 16px;
+  margin-bottom: clamp(14px, 3vw, 18px);
   box-shadow: var(--shadow-sm);
 }
 
@@ -192,7 +218,11 @@ function onImgError(e) {
   background: var(--red); color: white; border-color: var(--red);
 }
 
-.random-btn { margin-bottom: 20px; }
+.random-btn {
+  display: flex;
+  margin: 0 auto 20px;
+  width: min(100%, 520px);
+}
 
 .result-card {
   background: white;
@@ -200,11 +230,13 @@ function onImgError(e) {
   border: 1.5px solid var(--gray-border);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
+  max-width: 680px;
+  margin: 0 auto;
 }
 
 .food-img {
   width: 100%;
-  height: 200px;
+  height: clamp(180px, 32vw, 260px);
   object-fit: cover;
 }
 
@@ -216,16 +248,23 @@ function onImgError(e) {
 }
 
 .map-icon-btn {
-  background: none; border: none; font-size: 20px; cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--red);
 }
 
 .menu-name {
   padding: 4px 14px 12px;
-  font-size: 18px;
+  font-size: clamp(17px, 3vw, 22px);
   font-weight: 700;
 }
 
 .dist-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 0 14px 8px;
   font-size: 13px;
   color: var(--text-sub);
@@ -233,11 +272,29 @@ function onImgError(e) {
 
 .fav-btn { margin: 0 14px 14px; width: calc(100% - 28px); }
 
-.loc-warn { font-size: 12px; color: #E65100; margin-top: 8px; }
+.fav-btn i {
+  margin-right: 6px;
+}
+
+.loc-warn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #E65100;
+  margin-top: 8px;
+}
 
 .loading-center {
   display: flex; flex-direction: column;
-  align-items: center; gap: 12px; margin-top: 60px; color: var(--text-sub);
+  align-items: center; gap: 12px; margin-top: clamp(42px, 8vh, 80px); color: var(--text-sub);
+}
+
+@media (max-width: 480px) {
+  .filter-opt {
+    flex: 1 1 calc(50% - 8px);
+    text-align: center;
+  }
 }
 
 /* Transitions */

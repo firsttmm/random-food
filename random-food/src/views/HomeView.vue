@@ -6,25 +6,33 @@
       <span class="page-title">สุ่มเมนูอาหาร</span>
       <RouterLink to="/profile" class="avatar">
         <img v-if="authStore.user?.photoURL" :src="authStore.user.photoURL" />
-        <span v-else>🧑</span>
+        <i v-else class="fa-solid fa-user" aria-hidden="true"></i>
       </RouterLink>
     </div>
 
     <!-- Center content -->
     <div class="home-center">
-      <img src="https://em-content.zobj.net/source/google/350/pizza_1f355.png"
-           class="pizza-logo" alt="pizza" />
+      <img src="/images/menus/Logo.png" class="pizza-logo" alt="random food" />
       <h2 class="home-title">สุ่มเมนูอาหาร</h2>
     </div>
 
     <!-- Buttons -->
     <div class="home-buttons">
-      <RouterLink to="/random" class="btn btn-primary">🎲 กดสุ่มเมนูอาหาร</RouterLink>
+      <RouterLink to="/random" class="btn btn-primary">
+        <i class="fa-solid fa-dice" aria-hidden="true"></i>
+        กดสุ่มเมนูอาหาร
+      </RouterLink>
 
       <template v-if="authStore.isLoggedIn">
-        <RouterLink to="/pin" class="btn btn-primary">📍 ปักหมุดร้านโดนใจ</RouterLink>
-        <RouterLink to="/favorites" class="btn btn-primary">❤️ ดูรายการโปรด</RouterLink>
-        <button class="btn btn-gray" @click="authStore.logout()">ออกจากระบบ</button>
+        <RouterLink to="/pin" class="btn btn-primary">
+          <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+          ปักหมุดร้านโดนใจ
+        </RouterLink>
+        <RouterLink to="/favorites" class="btn btn-primary">
+          <i class="fa-solid fa-heart" aria-hidden="true"></i>
+          ดูรายการโปรด
+        </RouterLink>
+    
       </template>
       <template v-else>
         <RouterLink to="/login" class="btn btn-outline">เข้าสู่ระบบ</RouterLink>
@@ -78,5 +86,9 @@ const authStore = useAuthStore()
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.home-buttons .btn i {
+  margin-right: 6px;
 }
 </style>

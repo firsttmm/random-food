@@ -1,11 +1,11 @@
 // src/firebase/config.js
 //  ใส่ Firebase config ของคุณที่นี่
-// ไปที่ https://console.firebase.google.com → สร้าง Project → เพิ่ม Web App → copy config
+
 
 import { initializeApp } from 'firebase/app'
-import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 import { getStorage } from 'firebase/storage'
+import { getAuth, browserLocalPersistence, setPersistence } from 'firebase/auth'
 
 const firebaseConfig = {
   apiKey: "AIzaSyAgDwA5IJyOAUEz5nNK4LjCeDUrCtWqOHM",
@@ -32,3 +32,4 @@ export const auth = getAuth(app)
 export const db = getFirestore(app)
 export const storage = getStorage(app)
 export default app
+setPersistence(auth, browserLocalPersistence).catch(console.error)

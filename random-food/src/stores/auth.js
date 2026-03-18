@@ -10,6 +10,7 @@ import {
 } from 'firebase/auth'
 import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore'
 import { auth, db } from '@/firebase/config'
+import { useFoodStore } from './food'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref(null)
@@ -65,6 +66,8 @@ export const useAuthStore = defineStore('auth', () => {
     await signOut(auth)
     user.value = null
     userProfile.value = null
+    const foodStore = useFoodStore()
+    foodStore.clearStore()
   }
 
   async function updateDisplayName(name) {

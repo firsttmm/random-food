@@ -8,8 +8,17 @@
 
     <div id="leaflet-map" ref="mapContainer" class="map-container"></div>
 
-    <div v-if="restaurantName" class="map-label">
-      📍 {{ restaurantName }}
+    <div class="map-bottom">
+      <div v-if="restaurantName" class="map-label">
+        <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+        <span>{{ restaurantName }}</span>
+      </div>
+      <a :href="`https://www.google.com/maps?q=${lat},${lng}`"
+         target="_blank" rel="noopener noreferrer"
+         class="btn btn-primary open-maps-btn">
+        <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+        เปิดใน Google Maps
+      </a>
     </div>
   </div>
 </template>
@@ -62,23 +71,40 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.map-view { padding-bottom: 0; }
+.map-view { padding-bottom: clamp(20px, 4vw, 28px); }
 
 .map-container {
   width: 100%;
-  height: 480px;
-  border-radius: var(--radius);
+  height: clamp(300px, 56vh, 640px);
+  border-radius: clamp(12px, 2vw, 16px);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
 }
 
-.map-label {
-  margin-top: 16px;
-  padding: 12px 16px;
-  background: var(--red-light);
-  border-radius: var(--radius-sm);
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text);
+
+
+.map-label i {
+  color: var(--red);
 }
+
+@media (max-width: 767px) {
+  .map-container {
+    height: clamp(280px, 50vh, 520px);
+  }
+}
+.map-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.open-maps-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
 </style>
