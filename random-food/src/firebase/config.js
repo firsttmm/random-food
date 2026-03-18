@@ -7,24 +7,15 @@ import { getFirestore } from 'firebase/firestore'
 import { getStorage } from 'firebase/storage'
 import { getAuth, browserLocalPersistence, setPersistence } from 'firebase/auth'
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAgDwA5IJyOAUEz5nNK4LjCeDUrCtWqOHM",
-  authDomain: "random-food-cdff7.firebaseapp.com",
-  projectId: "random-food-cdff7",
-  storageBucket: "random-food-cdff7.firebasestorage.app",
-  messagingSenderId: "921465748643",
-  appId: "1:921465748643:web:ed433d3e572982c443d316",
-  measurementId: "G-4D1J6X87J9"
-}
 
-//const firebaseConfig = {
-  //apiKey: "YOUR_API_KEY",
-  //authDomain: "YOUR_PROJECT.firebaseapp.com",
-  //projectId: "YOUR_PROJECT_ID",
-  //storageBucket: "YOUR_PROJECT.appspot.com",
-  //messagingSenderId: "YOUR_SENDER_ID",
-  //appId: "YOUR_APP_ID"
-//}
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+}
 
 const app = initializeApp(firebaseConfig)
 
