@@ -83,6 +83,40 @@ runSeed().then(() => console.log('Seeded!'))
 วางโค้ดจากไฟล์ `firestore.rules` แล้วกด **Publish**
 
 ---
+```bash
+ไปที่ Firebase Console → Firestore → Rules แล้วแทนที่ทั้งหมดด้วยนี้เลย:
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // เมนูอาหาร seed - อ่านได้ทุกคน
+    match /menus/{menuId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // ข้อมูล user document (รวม shareSettings)
+    match /users/{userId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // pins ของ user
+    match /users/{userId}/pins/{pinId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // favorites - เจ้าของแก้ได้, คนอื่นอ่านได้ถ้า shareSettings.enabled == true
+    match /users/{userId}/favorites/{favId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if get(/databases/$(database)/documents/users/$(userId)).data.shareSettings.enabled == true;
+    }
+  }
+}
+
+```
+
+---
 
 ## ขั้นตอนที่ 6 — รันโปรเจกต์
 
